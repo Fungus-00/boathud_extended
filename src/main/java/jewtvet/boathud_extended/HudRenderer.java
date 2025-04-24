@@ -1,7 +1,9 @@
 package jewtvet.boathud_extended;
 
+import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import java.util.Iterator;
+
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
@@ -35,9 +37,9 @@ public class HudRenderer {
         int[] horizontal_compact = new int[]{horizontalCentre - 68, horizontalCentre, horizontalCentre + 68};
         int[] vertical = new int[]{heightWithOffset - 14, heightWithOffset - 4};
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, WIDGETS_TEXTURE);
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderTexture(0, Common.client.getTextureManager().getTexture(WIDGETS_TEXTURE).getGlTexture());
+        GlStateManager._enableBlend();
+        GlStateManager._blendFuncSeparate(1, 0, 1, 0);
         drawBackground(context, horizontalCentre, heightWithOffset);
         drawSpeedBar(context, horizontalCentre, heightWithOffset);
         if (Config.extended) {
@@ -69,7 +71,7 @@ public class HudRenderer {
                 drawTextAlign(context, getString(HudRenderer.DisplayType.ACCELERATION), horizontal_compact[1] + 6, vertical[0], 1);
             }
         }
-        RenderSystem.disableBlend();
+        GlStateManager._disableBlend();
     }
 
     private static void drawBackground(DrawContext context, int x, int y) {
